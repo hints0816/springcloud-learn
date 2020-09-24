@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@//10.1.18.83:1521/greepro
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: pro
+    password: greepro2014
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: hints
+    password: hints
+  application:
+    name: service-one
+server:
+  port: 8081
+
+#配置mybatis-plus的mapper扫描路径
+mybatis-plus:
+  mapper-locations: classpath:/daomapper/*.xml
+  configuration:
+    #控制台打印sql
+
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#打印debug信息
+debug: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+feign:
+  hystrix:
+    enabled: true
+
+logging:
+  config: classpath:log/log4j2-spring.xml
+  level:
+    root: info

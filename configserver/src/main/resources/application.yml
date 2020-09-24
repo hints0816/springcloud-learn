@@ -1,0 +1,45 @@
+server:
+  port: 8888
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+#  profiles:
+#    active: native
+  application:
+    name: springcloud-config-bus-server
+  cloud:
+    config:
+      server:
+        git:
+          #git仓库地址
+          uri: http://10.1.11.100:3000/hints/config.git
+          username: 180686
+          password: hints0816
+          # 配置中心通过git从远程git库，有时本地的拷贝被污染，这时配置中心无法从远程库更新本地配置,设置force-pull=true，则强制从远程库中更新本地库
+          force-pull: true
+          search-paths: /{application}
+#        native:
+#          search-locations: classpath:config/,classpath:config/licenseservice
+    bus:
+      enabled: true
+      trace:
+        enabled: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: hints
+    password: hints
+management:
+  endpoint:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh

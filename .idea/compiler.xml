@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AjcSettings">
+    <option name="ajcPath" value="$MAVEN_REPOSITORY$/aspectj/aspectjtools/1.5.2a/aspectjtools-1.5.2a.jar" />
+    <option name="delegateToJavac" value="true" />
+  </component>
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="ajc" />
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="authserver" />
+        <module name="authserverhi" />
+        <module name="configserver" />
+        <module name="eurekademo" />
+        <module name="gatewayclient" />
+        <module name="gatewaytoken" />
+        <module name="licenseserver" />
+        <module name="licenseserver2" />
+        <module name="nettylearn" />
+        <module name="oauthresource" />
+        <module name="rabbitserver" />
+        <module name="serverClient" />
+        <module name="serverfive" />
+        <module name="serverone" />
+        <module name="serverthree" />
+        <module name="servertwo" />
+        <module name="streamlicense" />
+        <module name="streamrabbit" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="eurekaserver" target="1.8" />
+      <module name="licenseserver (1)" target="1.8" />
+      <module name="nutzserver" target="1.8" />
+      <module name="oauthclient" target="1.8" />
+      <module name="quarkusserver" target="1.5" />
+      <module name="sdsds" target="1.7" />
+      <module name="serverfive" target="1.8" />
+      <module name="serverfour" target="1.8" />
+      <module name="serverseven" target="1.8" />
+      <module name="serversix" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

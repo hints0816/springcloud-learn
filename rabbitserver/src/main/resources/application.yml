@@ -1,0 +1,18 @@
+server:
+  port: 8087
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: rabbit-server
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: hints
+    password: hints
+

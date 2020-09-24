@@ -1,0 +1,24 @@
+server:
+  port: 9006
+
+spring:
+  application:
+    name: configmess
+  cloud:
+    config:
+      fail-fast: true
+    bus:
+      trace:
+        enabled: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: hints
+    password: hints
+
+management:
+  endpoint:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh,httptrace

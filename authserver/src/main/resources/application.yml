@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: service-auth
+  redis:
+    host: 127.0.0.1
+    database: 0
+  datasource:
+    url: jdbc:oracle:thin:@10.2.25.244:1521/greeprotest
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: pro
+    password: greepro2014
+  thymeleaf:
+    prefix: classpath:/views/
+    suffix: .html
+    cache: false
+
+#mybatis-plus:
+#  mapper-locations: classpath:/daomapper/*.xml
+#  configuration:
+#    #控制台打印sql
+#
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 9091
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true

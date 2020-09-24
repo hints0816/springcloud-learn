@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/sdsds" />
+    <file type="web" url="file://$PROJECT_DIR$/serverfour" />
+    <file type="web" url="file://$PROJECT_DIR$/serverseven" />
+    <file type="web" url="file://$PROJECT_DIR$/serversix" />
+  </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/nutzserver/pom.xml" />
+        <option value="$PROJECT_DIR$/oauthclient/pom.xml" />
+        <option value="$PROJECT_DIR$/quarkusserver/pom.xml" />
+        <option value="$PROJECT_DIR$/sdsds/pom.xml" />
+        <option value="$PROJECT_DIR$/serverfive/pom.xml" />
+        <option value="$PROJECT_DIR$/serverseven/pom.xml" />
+        <option value="$PROJECT_DIR$/serversiv/pom.xml" />
+        <option value="$PROJECT_DIR$/serversix/pom.xml" />
+        <option value="$PROJECT_DIR$/serverythree/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

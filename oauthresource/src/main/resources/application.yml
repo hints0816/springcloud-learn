@@ -1,0 +1,31 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8876
+spring:
+  application:
+    name: resource-server
+  datasource:
+    url: jdbc:oracle:thin:@10.2.25.244:1521/greeprotest
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: pro
+    password: greepro2014
+  thymeleaf:
+    prefix: classpath:/views/
+    suffix: .html
+    cache: false
+
+security:
+  oauth2:
+    client:
+      id: client_3
+      client-secret: 123456
+      access-token-uri: http://localhost:9091/oauth/token
+      user-authorization-uri: http://localhost:9091/oauth/authorize
+    resource:
+      id: resource1
+      jwt:
+        key-uri: http://localhost:9091/users/current
+        key-value: internet_plus

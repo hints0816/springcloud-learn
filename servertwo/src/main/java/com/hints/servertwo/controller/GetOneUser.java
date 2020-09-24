@@ -27,7 +27,7 @@ public class GetOneUser {
 
     @GetMapping("/user/{id}")
     public String getOneUserById(@PathVariable String id) {
-        System.out.println("get1");
+        System.out.println("get");
         return cronTaskDao.getTest()+port;
     }
 

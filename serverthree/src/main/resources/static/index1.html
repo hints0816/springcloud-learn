@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="js/vue.js"></script>
+    <script src="js/axios.min.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <!--<button v-on:click="msg">点击button</button>-->
+    <!--<button v-on:click="msg1">点击button</button>-->
+    <button @click="exportExcel">点击导出Excel</button>
+</div>
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        methods: {
+            exportExcel: function() {
+                axios({
+                    method: 'post',
+                    url: 'discovery',
+                    params: {
+                        id: '123'  //参数
+                    },
+                    responseType: 'blob',
+                    responseEncoding: 'utf8', // default
+                    headers: { 'content-type': 'application/x-www-form-urlencoded' }
+                }).then(response =>{
+                        const data = new Blob([response]);
+                        const downloadElement = document.createElement('a');
+                        const href = window.URL.createObjectURL(data); //创建下载的链接
+                        downloadElement.href = href;
+                        downloadElement.download = '导出文件.xls'; //下载后文件名
+                        document.body.appendChild(downloadElement);
+                        downloadElement.click(); //点击下载
+                        document.body.removeChild(downloadElement); //下载完成移除元素
+                        window.URL.revokeObjectURL(href); //释放掉blob对象
+                    }).catch(error=>{
+                    console.log(error)
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

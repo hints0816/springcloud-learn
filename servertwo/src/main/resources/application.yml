@@ -1,0 +1,44 @@
+server:
+  port: 8084
+
+eureka:
+  #  server:
+  #    # 是否开启安全检测
+  #    enable-self-preservation: false
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      # 设置与 Eureka Server 交互的地址查询服务和注册服务都需要依赖这个地址(服务暴露的地址)
+      defaultZone: http://localhost:8761/eureka/
+
+##配置mybatis-plus的mapper扫描路径
+mybatis-plus:
+  mapper-locations: classpath:/daomapper/*.xml
+  configuration:
+    #控制台打印sql
+
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#打印debug信息
+debug: true
+
+spring:
+  datasource:
+    main:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      jdbc-url: jdbc:oracle:thin:@10.2.25.244:1521/greeprotest
+      username: pro
+      password: greepro2014
+    subo:
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      jdbc-url: jdbc:oracle:thin:@10.1.1.173:1521:sales
+      username: greescmdb2
+      password: geli*scm_10142015
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: hints
+    password: hints
+  application:
+    name: eurka-serverB

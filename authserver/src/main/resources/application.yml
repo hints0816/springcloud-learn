@@ -5,10 +5,16 @@ spring:
     host: 127.0.0.1
     database: 0
   datasource:
-    url: jdbc:oracle:thin:@10.2.25.244:1521/greeprotest
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    username: pro
-    password: greepro2014
+    main:
+      jdbc-url: jdbc:oracle:thin:@10.2.25.244:1521/greeprotest
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      username: pro
+      password: greepro2014
+    subo:
+      jdbc-url: jdbc:oracle:thin:@10.1.1.173:1521:sales
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      username: scmtest
+      password: scn*test*123
   thymeleaf:
     prefix: classpath:/views/
     suffix: .html

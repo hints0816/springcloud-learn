@@ -4,8 +4,48 @@
     <meta charset="UTF-8">
     <title>登录</title>
     <link rel="stylesheet" type="text/css" href="/css/iconfont.css">
+    <script type="text/javascript" src="/js/jquery-1.12.4.min.js"></script>
     <link rel="stylesheet" href="/css/demo.css">
     <script src="/css/iconfont.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#error-info").hide();
+            $('#loginOut').click(function(){
+                var username = $('#session_email_or_mobile_number').val();
+                var password = $('#session_password').val();
+                if (username == "" || password == "") {
+                    $("#error-msg").html("");
+                    $("#error-msg").append("请输入微博帐号");
+                    $("#error-info").show();
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "http://dq18-180686j.it2004.gree.com.cn/9091/oauth/login",
+                    dataType:'json',
+                    data: {
+                        "session[email_or_mobile_number]": username,
+                        "session[password]": password
+                    },
+                    success: function (data) {
+                        $.each(data, function(key, value) {
+                            if (key == "error"){
+                                $("#error-msg").html("");
+                                $("#error-msg").append(value);
+                                $("#error-info").show();
+                            }else{
+                                window.location.href=value;
+                            }
+                        })
+                    },
+                });
+            });
+        })
+
+        function closetip(){
+            $("#error-info").hide();
+        }
+    </script>
 </head>
 
 <style>
@@ -190,16 +230,16 @@
                         <input placeholder="密码" type="password" name="session[password]" id="session_password" style="outline:none">
                         <i class="icon iconfont icon-mima"></i>
                     </div>
-                    <button type="submit" class="btn">登&nbsp; 录</button>
-                    <div class="more-sign">
-                        <h6>社交账号登录</h6>
-                        <ul>
-                            <li><a id="weibo" href="/requestServerCode" style="color: #333333"><span class="icon iconfont icon-weibo"></span></a></li>
-                            <li><a id="weixin" href="#" style="color: #333333"><i class="icon iconfont icon-weixin"></i></a></li>
-                            <li><a id="tecent" href="#" style="color: #333333"><span class="icon iconfont icon-icon"></span></a></li>
-                        </ul>
-                    </div>
                 </form>
+                <button class="btn" id="loginOut">登&nbsp; 录</button>
+                <div class="more-sign">
+                    <h6>社交账号登录</h6>
+                    <ul>
+                        <li><a id="weibo" href="/requestServerCode" style="color: #333333"><span class="icon iconfont icon-weibo"></span></a></li>
+                        <li><a id="weixin" href="#" style="color: #333333"><i class="icon iconfont icon-weixin"></i></a></li>
+                        <li><a id="tecent" href="#" style="color: #333333"><span class="icon iconfont icon-icon"></span></a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

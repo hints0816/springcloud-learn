@@ -121,11 +121,12 @@ public class CipherDao {
     }
 
     public String encryptbyaes(String plainText,String aesKey,String ivVal) throws Exception {
-        byte[] data=plainText.getBytes();
+        byte[] data=plainText.getBytes("UTF-8");
         AlgorithmParameters iv=generateIV(ivVal);
         byte[] keyBytes = aesKey.getBytes();
         //转化为密钥
         SecretKeySpec key = new SecretKeySpec(keyBytes,"AES");
+        /*在java中用aes256进行加密，但是发现java里面不能使用PKCS7Padding，而java中自带的是PKCS5Padding填充，那解决办法是，通过BouncyCastle组件来让java里面支持PKCS7Padding填充。*/
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
         //设置为加密模式
@@ -138,6 +139,7 @@ public class CipherDao {
         byte[] encryptedData=Base64.decodeBase64(encryptedStr);
         byte[] keyBytes = aesKey.getBytes();
         SecretKeySpec key = new SecretKeySpec(keyBytes,"AES");
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
         AlgorithmParameters iv=generateIV(ivVal);
         //设置为解密模式

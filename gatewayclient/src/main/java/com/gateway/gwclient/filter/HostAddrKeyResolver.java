@@ -9,7 +9,7 @@ public class HostAddrKeyResolver implements KeyResolver {
 
     @Override
     public Mono<String> resolve(ServerWebExchange exchange) {
-        return Mono.just(exchange.getRequest().getURI().getPath());
+        return Mono.just(exchange.getRequest().getURI().getPath());//根据URL地址进行限流
     }
 
 }

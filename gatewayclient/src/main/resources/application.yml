@@ -28,9 +28,9 @@ spring:
         filters:
         - name: RequestRateLimiter
           args:
-            key-resolver: '#{@hostAddrKeyResolver}'
-            redis-rate-limiter.replenishRate: 1
-            redis-rate-limiter.burstCapacity: 2
+            key-resolver: '#{@hostAddrKeyResolver}' #使用SPEL表达式从spring容器中获取bean容器
+            redis-rate-limiter.replenishRate: 1 #令牌桶每秒填充平均速率
+            redis-rate-limiter.burstCapacity: 2 #令牌桶的总容量
 
       - id: userapi2_route
         uri: ${test.uri}

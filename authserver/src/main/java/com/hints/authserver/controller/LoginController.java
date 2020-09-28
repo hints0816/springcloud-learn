@@ -26,11 +26,6 @@ public class LoginController {
         return "访问资源2";
     }
 
-    @GetMapping("/oauth/login1")
-    public void login() {
-        System.out.println("访问资源3");
-    }
-
     @GetMapping("/order/{id}")
     public String getOrder(@PathVariable String id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

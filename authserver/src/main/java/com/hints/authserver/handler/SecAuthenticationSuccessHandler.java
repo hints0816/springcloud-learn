@@ -10,6 +10,7 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,12 +26,15 @@ public class SecAuthenticationSuccessHandler extends SavedRequestAwareAuthentica
         log.info("登录成功");
         /*底层会从request里拿到session，再从session拿出原来要跳转的地址进行跳转*/
         /*super.onAuthenticationSuccess(request, response, authentication);*/
-
+        String header = request.getHeader("Authorization");
         SavedRequest savedRequest = requestCache.getRequest(request, response);
-        String targetUrl = savedRequest.getRedirectUrl();
-
-        response.setContentType("application/json;charset=UTF-8");
-        request.setAttribute("targetUrl",targetUrl);
-        request.getRequestDispatcher("/oauth2/success").forward(request,response);
+        if (savedRequest == null) {
+            super.onAuthenticationSuccess(request, response, authentication);
+        } else {
+            String targetUrl = savedRequest.getRedirectUrl();
+            response.setContentType("application/json;charset=UTF-8");
+            request.setAttribute("targetUrl",targetUrl);
+            request.getRequestDispatcher("/oauth2/success").forward(request,response);
+        }
     }
 }

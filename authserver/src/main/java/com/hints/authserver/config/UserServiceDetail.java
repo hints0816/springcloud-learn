@@ -23,7 +23,7 @@ public class UserServiceDetail implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.finduser(username);
         if(user == null){
-            throw new UsernameNotFoundException("用户不存在!");
+            throw new UsernameNotFoundException("用户不存在!1");
         }
         UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(user.getUsername())
                 .password(user.getPassword())

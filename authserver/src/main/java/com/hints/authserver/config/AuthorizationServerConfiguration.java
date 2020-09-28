@@ -1,6 +1,7 @@
 package com.hints.authserver.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -12,12 +13,15 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 
 
@@ -41,6 +45,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired
     private TokenStore jwtTokenStore;
 
+    @Autowired
+    private @Qualifier("test2DataSource")DataSource dataSource;
 
     /*clientDetailsService注入，决定clientDetails信息的处理服务。*/
     @Override
@@ -123,7 +129,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         endpoints
                 .tokenStore(jwtTokenStore) //Token的存储方式为内存
                 .authenticationManager(authenticationManager) //WebSecurity配置好的
-                .userDetailsService(userServiceDetail);//读取用户的验证信息
+                .userDetailsService(userServiceDetail)//读取用户的验证信息
+                .authorizationCodeServices(authorizationCodeServices());
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain(); //新建一个令牌增强链(payload)
         enhancerChain.setTokenEnhancers(Arrays.asList(JwtTokenEnhancer(),jwtTokenConfig.jwtAccessTokenConverter()));
         endpoints
@@ -144,6 +151,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                ;
     }
 
+    @Bean
+    public AuthorizationCodeServices authorizationCodeServices() {
+        JdbcAuthorizationCodeServices authorizationCodeServices = new CustomJdbcAuthorizationCodeServices(dataSource);
+        return authorizationCodeServices;
+    }
 
     @Bean
     public TokenEnhancer JwtTokenEnhancer(){

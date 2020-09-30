@@ -2,8 +2,11 @@ package com.hints.authserver.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hints.authserver.dao.UserDao;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -14,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,14 +25,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@AllArgsConstructor
 @SessionAttributes("authorizationRequest")
 public class BaseMainController {
 
     private RequestCache requestCache = new HttpSessionRequestCache();
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-
+    private final TokenStore tokenStore;
     @Autowired
     private UserDao userDao;
+
+    /*public BaseMainController(TokenStore tokenStore) {
+        this.tokenStore = tokenStore;
+    }加上@AllArgsConstructor就不需要构造方法啦*/
 
     @RequestMapping("/oauth/index")
     @ResponseBody
@@ -88,9 +97,29 @@ public class BaseMainController {
         return jsonObject;
     }
 
+    @DeleteMapping("/logout")
+    public void logout(HttpServletRequest request) {
+        Cookie[] cookies =  request.getCookies();
+        String tokenValue = "";
+        if(cookies != null){
+            for(Cookie cookie : cookies){
+                if(cookie.getName().equals("Authorization")){
+                    tokenValue = cookie.getValue();
+                }
+            }
+        }
+        OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
+        tokenStore.removeAccessToken(accessToken);
+    }
+
     @GetMapping("/oauth/register")
     public String registerPage(){
         return "base-register";
+    }
+
+    @GetMapping("/oauth1/register")
+    public String registerPage1(){
+        return "base-login1";
     }
 
     @GetMapping("/oauth/index231")

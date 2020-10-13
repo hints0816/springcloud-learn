@@ -1,10 +1,12 @@
 package com.hints.authserver.config;
 
+import com.hints.authserver.customImpl.ClientDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +23,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Arrays;
 
@@ -29,6 +32,9 @@ import java.util.Arrays;
 @EnableAuthorizationServer //表明这是一个认证服务器
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 //    private static final String RESOURCE_ID = "account";
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -53,12 +59,14 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         String finalSecret = "{bcrypt}" + new BCryptPasswordEncoder().encode("123456");
 
-        /*//1.认证信息从数据库获取
-        clients.withClientDetails(clientDetailsService);*/
+        //1.认证信息从数据库获取
+        ClientDetailsServiceImpl clientDetailsService =new ClientDetailsServiceImpl();
+        clientDetailsService.setRedisTemplate(redisTemplate);
+        clients.withClientDetails(clientDetailsService);
 
         // 2.测试用，将客户端信息存储在内存中
         // 配置两个客户端，一个用于password认证模式一个用于client认证模式(oauth2一共有四种模式)
-        clients.inMemory()
+        /*clients.inMemory()
                 .withClient("client_1")
 //                .resourceIds(RESOURCE_ID)
                 .authorizedGrantTypes("client_credentials", "refresh_token")
@@ -81,7 +89,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .redirectUris("http://dq18-180686j.it2004.gree.com.cn:8765/oauth/callbackCode ")
                 .scopes("app")
                 .autoApprove(true)//是否自动授权
-                .accessTokenValiditySeconds(100000); //5min过期
+                .accessTokenValiditySeconds(100000); //5min过期*/
     }
 
 //    1.将token存放在redis

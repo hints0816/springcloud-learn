@@ -22,7 +22,6 @@ public class JwtTokenConfig {
     public JwtAccessTokenConverter jwtAccessTokenConverter(){
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
         //配置密钥,这里我使用internet_plus这个字符串作为密钥(你没看错，密钥就是一个字符串)
-        /*any way,这种密钥应该属于对称加密，那么是否安全呢，密钥的传递？*/
         accessTokenConverter.setSigningKey("internet_plus");
         return accessTokenConverter;
     }

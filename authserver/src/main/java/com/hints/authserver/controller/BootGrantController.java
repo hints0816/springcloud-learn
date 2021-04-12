@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Controller
-// 必须配置
+// 必须配置, 将authorizationRequest添加到session
 @SessionAttributes("authorizationRequest")
 public class BootGrantController {
 

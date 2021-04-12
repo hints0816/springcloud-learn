@@ -30,6 +30,13 @@ public class DataSourceConfig {
         return DataSourceBuilder.create().build();
     }
 
+    @Bean(name = "test3DataSource")
+    @Qualifier("test3DataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.gscm")
+    public DataSource initGscmDataSource() throws SQLException {
+        return DataSourceBuilder.create().build();
+    }
+
     @Primary
     @Bean
     public Dao initNutzDao(@Qualifier("testDataSource") DataSource dataSource){
@@ -41,5 +48,8 @@ public class DataSourceConfig {
         return new NutDao(dataSource);
     }
 
-
+    @Bean(name = "zdao")
+    public Dao initssNutzDao(@Qualifier("test3DataSource") DataSource dataSource){
+        return new NutDao(dataSource);
+    }
 }

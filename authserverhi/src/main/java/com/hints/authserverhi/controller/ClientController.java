@@ -1,12 +1,9 @@
 package com.hints.authserverhi.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.oltu.oauth2.client.OAuthClient;
 import org.apache.oltu.oauth2.client.URLConnectionClient;
-import org.apache.oltu.oauth2.client.request.OAuthBearerClientRequest;
 import org.apache.oltu.oauth2.client.request.OAuthClientRequest;
 import org.apache.oltu.oauth2.client.response.OAuthAccessTokenResponse;
-import org.apache.oltu.oauth2.client.response.OAuthResourceResponse;
 import org.apache.oltu.oauth2.common.OAuth;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
@@ -14,12 +11,14 @@ import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.security.oauth2.provider.AuthorizationRequest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,7 +26,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 @Controller
 public class ClientController {
@@ -48,7 +46,7 @@ public class ClientController {
             throws OAuthProblemException {
         clientId = "client_3";
         accessTokenUrl = "authorize";
-        redirectUrl = "http://dq18-180686j.it2004.gree.com.cn:8765/oauth/callbackCode";
+        redirectUrl = "http://localhost:8765/oauth/callbackCode";
         response_type = "code";
         String requestUrl = null;
         try {
@@ -58,13 +56,14 @@ public class ClientController {
                     .setResponseType(response_type)
                     .setClientId(clientId)
                     .setRedirectURI(redirectUrl)
+                    .setState("SH12W8")
                     .buildQueryMessage();
             requestUrl = accessTokenRequest.getLocationUri();
             System.out.println("获取授权码方法中的requestUrl的值----"+requestUrl);
         } catch (OAuthSystemException e) {
             e.printStackTrace();
         }
-        return "redirect:http://dq18-180686j.it2004.gree.com.cn:9091/oauth/"+requestUrl ;
+        return "redirect:http://localhost:9091/oauth/"+requestUrl ;
     }
 
     //如何解决前端跨域问题，anyway，what's cross
@@ -74,9 +73,9 @@ public class ClientController {
             throws Exception {
         clientId = "client_3";
         clientSecret = "123456";
-        accessTokenUrl = "http://dq18-180686j.it2004.gree.com.cn:9091/oauth/token";
+        accessTokenUrl = "http://localhost:9091/oauth/token";
         userInfoUrl = "userInfoUrl";
-        redirectUrl = "http://dq18-180686j.it2004.gree.com.cn:8765/oauth/callbackCode";
+        redirectUrl = "http://localhost:8765/oauth/callbackCode";
         HttpServletRequest httpRequest = (HttpServletRequest)request;
         code = httpRequest.getParameter("code");
         OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
@@ -106,7 +105,7 @@ public class ClientController {
             response.addCookie(cookies);
             response.addHeader("Authorization", "Bearer " + accessToken);
             response.setHeader("Access-Control-Expose-Headers","Authorization");
-            response.sendRedirect("http://dq18-180686j.it2004.gree.com.cn:8765/oauth/index");
+            response.sendRedirect("http://localhost:8765/oauth/index");
         }catch (OAuthSystemException e){
             e.printStackTrace();
         }
@@ -127,12 +126,12 @@ public class ClientController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer "+code);
         HttpEntity<String> entity = new HttpEntity<String>("parameters",headers);
-        ResponseEntity<String> result = restTemplate.exchange("http://dq18-180686j.it2004.gree.com.cn:8876/product/1", HttpMethod.GET,entity,String.class);
+        ResponseEntity<String> result = restTemplate.exchange("http://localhost:8876/product/1", HttpMethod.GET,entity,String.class);
 
         String clientname = result.getBody().toString();
         try {
             response.addHeader("Authorization", "Bearer " + code);
-            response.sendRedirect("http://dq18-180686j.it2004.gree.com.cn:8765/oauth/index");
+            response.sendRedirect("http://localhost:8765/oauth/index");
         } catch (IOException e) {
             e.printStackTrace();
         }

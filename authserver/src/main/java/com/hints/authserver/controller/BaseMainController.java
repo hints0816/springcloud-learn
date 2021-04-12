@@ -3,6 +3,7 @@ package com.hints.authserver.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.hints.authserver.dao.UserDao;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -20,12 +21,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @SessionAttributes("authorizationRequest")
 public class BaseMainController {
 
@@ -51,9 +53,13 @@ public class BaseMainController {
             if(targetUrl.contains("?")){
                 param = targetUrl.substring(targetUrl.indexOf('?'));
             }
-            System.out.println("引发跳转的请求是:" + targetUrl);
-            //这里我必须改变跳转的url，要是使用targetUrl会造成循环
-            redirectStrategy.sendRedirect(request, response, "/oauth2/authorize"+param);
+            if(param.contains("redirect_uri=http://dq18-180686j.it2004.gree.com.cn:8878/")){
+                redirectStrategy.sendRedirect(request, response, "/oauth2/login");
+            }else{
+                System.out.println("引发跳转的请求是:" + targetUrl);
+                //这里我必须改变跳转的url，要是使用targetUrl会造成循环
+                redirectStrategy.sendRedirect(request, response, "/oauth2/authorize"+param);
+            }
         }
         //如果访问的是接口资源
         return new HashMap() {{
@@ -71,7 +77,17 @@ public class BaseMainController {
         if(request.getAttribute("error")!=null){
             model.addObject("error",request.getAttribute("error"));
         }
+        HttpSession session = request.getSession();
+        //将数据存储到session中
+        session.setAttribute("data", "hints");
         model.addObject("client_name",userDao.getclientname(client_id));
+        return model;
+    }
+
+    @RequestMapping(value = "/oauth2/login")
+    /* @ResponseBody*/
+    public ModelAndView login(HttpServletResponse response, HttpServletRequest request){
+        ModelAndView model = new ModelAndView("base-login");
         return model;
     }
 

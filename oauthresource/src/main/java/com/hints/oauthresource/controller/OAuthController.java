@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
@@ -17,11 +18,11 @@ import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 
 @RestController
-public class TestEndPointController {
+public class OAuthController {
 
-    Logger logger = LoggerFactory.getLogger(TestEndPointController.class);
+    Logger logger = LoggerFactory.getLogger(OAuthController.class);
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('HSS009')")
     @GetMapping("/product/{id}")
     public String getProduct(@PathVariable String id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,7 +50,7 @@ public class TestEndPointController {
     }
 
     @GetMapping("/me")
-    public Object getCurrentUser1(Authentication authentication,HttpServletRequest request) throws UnsupportedEncodingException {
+    public Object getCurrentUser1(Authentication authentication, @AuthenticationPrincipal String username, HttpServletRequest request) throws UnsupportedEncodingException {
         String header = request.getHeader("Authorization");
         String token = StringUtils.substringAfter(header, "Bearer ");
         Claims claims = Jwts.parser()

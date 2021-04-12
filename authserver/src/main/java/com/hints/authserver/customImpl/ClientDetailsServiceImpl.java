@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @Data
@@ -77,6 +78,9 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
             baseClientDetails.setRefreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds().intValue());
             baseClientDetails.setScope(Arrays.asList(client.getScopes().split(",")));
             baseClientDetails.setAutoApproveScopes(Arrays.asList(client.getScopes().split(",")));
+            ArrayList<String> list = new ArrayList<String>();
+            list.add("fuck");
+            baseClientDetails.setResourceIds(list);
         }
         return baseClientDetails;
     }
